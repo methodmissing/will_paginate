@@ -41,7 +41,7 @@ module WillPaginate
       # subclasses, but in a different way for Rails 1.2.x and 2.0
       (collection.instance_methods.include?(:create!) ?
         collection : collection.subclasses.map(&:constantize)
-      ).push(associations::HasManyThroughAssociation).each do |klass|
+      ).each do |klass|
         klass.class_eval do
           include Finder::ClassMethods
           alias_method_chain :method_missing, :paginate
