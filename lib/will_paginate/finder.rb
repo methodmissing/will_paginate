@@ -138,7 +138,7 @@ module WillPaginate
             count_query = original_query.sub /\bORDER\s+BY\s+[\w`,\s]+$/mi, ''
             count_query = "SELECT COUNT(*) FROM (#{count_query})"
             
-            unless ['oracle', 'oci'].include?(self.connection.adapter_name.downcase)
+            unless with_oracle?
               count_query << ' AS count_table'
             end
             # perform the count query
@@ -157,6 +157,10 @@ module WillPaginate
       end
 
     protected
+      
+      def with_oracle?
+        ['oracle', 'oci'].include?(self.connection.adapter_name.downcase)
+      end
       
       def method_missing_with_paginate(method, *args, &block) #:nodoc:
         # did somebody tried to paginate? if not, let them be
